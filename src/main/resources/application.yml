@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: meli-challenge
+  profiles:
+    active: local
+  cache:
+    infinispan:
+      config: classpath:config.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  health:
+    circuitbreakers:
+      enabled: true
+    ratelimiters:
+      enabled: true
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+    prometheus:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+resilience4j:
+  retry:
+    instances:
+      getAPIRetry:
+        max-attempts: 3
+        wait-duration: 1s
+    metrics:
+      legacy:
+        enabled: true
+      enabled: true
+
+infinispan:
+  embedded:
+    enabled: true
+
+
+routes:
+  server: "https://api.mercadolibre.com"

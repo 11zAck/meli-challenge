@@ -1,0 +1,10 @@
+<infinispan>
+    <cache-container name="meli" default-cache="meliCache">
+        <local-cache name="meliCache" simple-cache="true">
+            <memory>
+                <object size="5000"/>
+            </memory>
+            <expiration interval="5000" lifespan="60000" max-idle="10000"/>
+        </local-cache>
+    </cache-container>
+</infinispan>
