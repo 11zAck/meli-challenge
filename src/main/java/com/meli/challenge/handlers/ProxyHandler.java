@@ -23,6 +23,11 @@ public class ProxyHandler {
     public Mono<ServerResponse> getAPI(ServerRequest request) {
         log.info("GET URI: {}", request.uri().getPath());
 
+        if(request.uri().getPath().contains("prometheus")
+        || request.uri().getPath().contains("actuator")
+        || request.uri().getPath().contains("favicon"))
+            return Mono.empty();
+
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -34,6 +39,11 @@ public class ProxyHandler {
 
     public Mono<ServerResponse> postAPI(ServerRequest request) {
         log.info("POST URI: {}", request.uri().getPath());
+
+        if(request.uri().getPath().contains("prometheus")
+                || request.uri().getPath().contains("actuator")
+                || request.uri().getPath().contains("favicon"))
+            return Mono.empty();
 
         return request
                 .bodyToMono(String.class)
