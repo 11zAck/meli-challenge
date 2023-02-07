@@ -6,6 +6,8 @@ spring:
   cache:
     infinispan:
       config: classpath:config.xml
+  main:
+    web-application-type: reactive
 
 management:
   endpoints:
@@ -33,6 +35,26 @@ management:
         http:
           server:
             requests: true
+        webclient-get: true
+        client-get: true
+        http-get: true
+        webapi-client: true
+        cache: true
+        cache-find: true
+        filter-handler: true
+
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
 
 resilience4j:
   retry:

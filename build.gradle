@@ -37,10 +37,20 @@ dependencies {
     implementation 'org.infinispan:infinispan-spring-boot-starter-embedded'
     compileOnly 'org.infinispan:infinispan-component-annotations:14.0.6.Final'
 
+    implementation(platform("io.micrometer:micrometer-tracing-bom:1.0.0"))
+    implementation("io.micrometer:micrometer-tracing")
+    implementation("io.micrometer:micrometer-tracing-bridge-otel")
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
+    implementation("io.projectreactor:reactor-core-micrometer")
+
+    implementation("io.opentelemetry:opentelemetry-exporter-zipkin")
+
+    implementation "com.github.loki4j:loki-logback-appender:1.4.0-rc2"
+
     implementation 'javax.transaction:javax.transaction-api:1.2'
 
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
@@ -53,4 +63,16 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+graalvmNative {
+//    binaries {
+//        main {
+//            buildArgs.add('-H:Extra')
+//        }
+//    }
+    binaries.all {
+        resources.autodetect()
+    }
+    toolchainDetection = false
 }
