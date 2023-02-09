@@ -5,7 +5,6 @@ import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationRegistry;
 import io.micrometer.observation.contextpropagation.ObservationThreadLocalAccessor;
 import io.micrometer.tracing.Tracer;
-import io.micrometer.tracing.http.Response;
 import lombok.extern.log4j.Log4j2;
 
 import org.springframework.context.annotation.Bean;
@@ -24,9 +23,11 @@ public class ProxyRouter {
     private final ObservationRegistry registry;
     private final Tracer tracer;
 
+
     public ProxyRouter(ObservationRegistry registry, Tracer tracer) {
         this.registry = registry;
         this.tracer = tracer;
+
     }
 
     @Bean
@@ -53,6 +54,7 @@ public class ProxyRouter {
                             })
                             .doFinally(signalType -> observation.stop())
                             .contextWrite(context -> context.put(ObservationThreadLocalAccessor.KEY, observation));
-                });
+                })
+                ;
     }
 }
